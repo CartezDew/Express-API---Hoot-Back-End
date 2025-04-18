@@ -1,28 +1,27 @@
-const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
+// controllers/auth.js
+import { Router } from "express";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
-router.get('/sign-token', (req, res) => {
-  const user = {
-    _id: 1,
-    username: 'test',
-    password: 'test'
-  }
+const router = Router();
+const secret = process.env.JWT_SECRET;
 
-  const token = jwt.sign({ user }, process.env.JWT_SECRET);
-  
-  res.json({ token });
+router.get("/sign-token", (req, res) => {
+  const user = { _id: 1, username: "test", password: "test" };
+  const token = jwt.sign({ user }, secret, { expiresIn: "1h" });
+  return res.json({ token });
 });
 
-router.post('/verify-token', (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+router.post("/verify-token", (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Token missing" });
+
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    res.json({ decoded });
-  } catch (err) {
-    res.status(401).json({ err: 'Invalid token.' });
+    const decoded = jwt.verify(token, secret);
+    return res.json({ decoded });
+  } catch {
+    return res.status(401).json({ error: "Invalid token" });
   }
 });
 
-module.exports = router;
+export default router;
