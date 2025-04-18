@@ -13,5 +13,4 @@ function verifyToken(req, res, next) {
     res.status(401).json({ err: 'Invalid token.' });
   }
 }
-
-module.exports = verifyToken;
+export default verifyToken;

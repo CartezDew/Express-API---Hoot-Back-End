@@ -1,34 +1,31 @@
 // server.js
 import { config } from "dotenv";
 import express from "express";
-import { connect, connection } from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
 
-import authRouter from "./controllers/auth.js";
-import testJwtRouter from "./controllers/test-jwt.js";
-import usersRouter from "./controllers/users.js";
+import testJwtRouter from "./test-jwt.js";
+import usersRouter from "./users.js";
 
-config();
+const router = express.Router();
 
-const PORT = process.env.PORT ?? 3000;
-const app = express();
-
-const start = async () => {
+// POST /auth/sign-up
+router.post("/sign-up", async (req, res) => {
   try {
-    await connect(process.env.MONGODB_URI);
-    console.log(`Connected to MongoDB ${connection.name}.`);
-    app.use(cors(), express.json(), morgan("dev"));
-    app.use("/auth", authRouter);
-    app.use("/test-jwt", testJwtRouter);
-    app.use("/users", usersRouter);
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error("Startup failed:", err);
-    process.exit(1);
-  }
-};
+    // For example purposes — extract user info from body
+    const { username, password } = req.body;
 
-start();
+    // TODO: Add user creation logic here (hash password, save user, etc.)
+
+    // Simulate token generation
+    const token = "mock.jwt.token";
+
+    // Respond with a token
+    res.status(201).json({ token });
+  } catch (err) {
+    console.error("Sign-up error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+export default router; 
