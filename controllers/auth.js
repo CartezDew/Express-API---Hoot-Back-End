@@ -1,57 +1,34 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// server.js
+import { config } from "dotenv";
+import express from "express";
+import { connect, connection } from "mongoose";
+import cors from "cors";
+import morgan from "morgan";
 
-const User = require('../models/user');
+import authRouter from "./controllers/auth.js";
+import testJwtRouter from "./controllers/test-jwt.js";
+import usersRouter from "./controllers/users.js";
 
-const saltRounds = 12;
+config();
 
-router.post('/sign-up', async (req, res) => {
+const PORT = process.env.PORT ?? 3000;
+const app = express();
+
+const start = async () => {
   try {
-    const userInDatabase = await User.findOne({ username: req.body.username });
-    
-    if (userInDatabase) {
-      return res.status(409).json({err: 'Username already taken.'});
-    }
-    
-    const user = await User.create({
-      username: req.body.username,
-      hashedPassword: bcrypt.hashSync(req.body.password, saltRounds)
+    await connect(process.env.MONGODB_URI);
+    console.log(`Connected to MongoDB ${connection.name}.`);
+    app.use(cors(), express.json(), morgan("dev"));
+    app.use("/auth", authRouter);
+    app.use("/test-jwt", testJwtRouter);
+    app.use("/users", usersRouter);
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
     });
-
-    const payload = { username: user.username, _id: user._id };
-
-    const token = jwt.sign({ payload }, process.env.JWT_SECRET);
-
-    res.status(201).json({ token });
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    console.error("Startup failed:", err);
+    process.exit(1);
   }
-});
+};
 
-router.post('/sign-in', async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.body.username });
-    if (!user) {
-      return res.status(401).json({ err: 'Invalid credentials.' });
-    }
-
-    const isPasswordCorrect = bcrypt.compareSync(
-      req.body.password, user.hashedPassword
-    );
-    if (!isPasswordCorrect) {
-      return res.status(401).json({ err: 'Invalid credentials.' });
-    }
-
-    const payload = { username: user.username, _id: user._id };
-
-    const token = jwt.sign({ payload }, process.env.JWT_SECRET);
-
-    res.status(200).json({ token });
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
-module.exports = router;
+start();

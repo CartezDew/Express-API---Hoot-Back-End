@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import 'dotenv/config'; // Ensure dotenv is configured to load environment variables
 
 function verifyToken(req, res, next) {
   try {
