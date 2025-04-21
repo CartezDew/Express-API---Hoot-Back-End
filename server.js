@@ -4,7 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import logger from "morgan";
-
+import Router from "./controllers/users.js"
 import authRouter from "./controllers/auth.js";
 import testJwtRouter from "./controllers/test-jwt.js";
 import usersRouter from "./controllers/users.js";
