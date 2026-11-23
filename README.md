@@ -1,58 +1,23 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# React + Vite
+# Express API practice project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An Express and MongoDB practice project with routes for users and JWT verification. The repository also contains a small Vite/React client scaffold.
 
-Currently, two official plugins are available:
+**Status:** This is an unfinished learning project. The `/auth/sign-up` route currently returns a mock token and does not create an account. Do not deploy it as an authentication service.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run locally
 
-## Expanding the ESLint configuration
+Requires Node.js, npm, and a MongoDB database. Create a `.env` file in the repository root:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-<<<<<<< HEAD
-# Express JWT Auth Template
-=======
-# React + Vite
->>>>>>> refs/remotes/origin/main
+```dotenv
+MONGODB_URI=your-mongodb-connection-string
+JWT_SECRET=your-local-development-secret
+```
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-<<<<<<< HEAD
-After moving into the cloned directory, run `npm i` to download the dependencies.
-
-Create a `.env` file in the root of the project:
+Then run:
 
 ```bash
-touch .env
+npm install
+npm run dev:server
 ```
 
-and add your MongoDB URI and a secret JWT string to it. Your MongoDB URI will look something like the first entry, but with your username and password:
-
-```plaintext
-MONGODB_URI=mongodb+srv://<username>:<password>@sei.azure.mongodb.net/myApp?retryWrites=true
-JWT_SECRET=supersecret
-```
-
-Start the app in your terminal with:
-
-``` sh
-npm run dev
-```
-=======
-# Express-API---Hoot-Back-End
->>>>>>> 976e3faa7157460913035b891517fcd357b06893
->>>>>>> 45addd14a0b4bc0cc0e868551b7270d2d7cb4b92
-=======
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
->>>>>>> refs/remotes/origin/main
+The server listens on port 3000 by default. Use `npm run dev:client` in another terminal to start the Vite client. `npm run build` builds the client.
